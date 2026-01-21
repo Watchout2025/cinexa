@@ -3449,6 +3449,7 @@ async function fetchTMDBResults(searchTerm) {
 
 // Function to display results for mobile (dropdown style)
 function displayMobileResults(results, searchTerm) {
+	const resultsBox = document.getElementById('mobile-results-container');
     resultsBox.innerHTML = '';
 
     if (results.length === 0) {
