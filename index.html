@@ -26,60 +26,52 @@
     const res = await fetch(API_URL);
     const data = await res.json();
 
-    const backdrops = data.results
+    const images = data.results
       .map(item => item.poster_path)
       .filter(Boolean);
 
-    if (!backdrops.length) return;
+    if (!images.length) return;
 
-    const spotlight = document.querySelector(".profile-spotlight-backdrop");
-    if (!spotlight) return;
+    const container = document.querySelector(".profile-spotlight");
+    if (!container) return;
+
+    // get or create img
+    let img = container.querySelector(".profile-spotlight-backdrop");
+    if (!img) {
+      img = document.createElement("img");
+      img.className = "profile-spotlight-backdrop";
+
+      // 🔹 EXACT styles you asked for
+      img.style.width = "100%";
+      img.style.height = "80vh";
+      img.style.objectFit = "cover";
+      img.style.aspectRatio = "16 / 9";
+
+      container.appendChild(img);
+    }
 
     let index = 0;
 
-    function changeBackdrop() {
-      // reset zoom
-      
+    function changeImage() {
+      // restart animation if any
+      img.classList.remove("zoom-effect");
+      void img.offsetWidth;
 
-      // fade out
-      //spotlight.style.opacity = "0";
+      img.src = IMAGE_BASE + images[index];
+      img.classList.add("zoom-effect");
 
-      setTimeout(() => {
-        const imgUrl = IMAGE_BASE + backdrops[index];
-
-        if (spotlight.tagName === "IMG") {
-          spotlight.src = imgUrl;
-		  spotlight.style.backgroundSize = "cover";
-          spotlight.style.backgroundPosition = "center";
-		  spotlight.classList.remove("zoom-effect");
-        } else {
-          spotlight.style.backgroundImage = `url(${imgUrl})`;
-          spotlight.style.backgroundSize = "cover";
-          spotlight.style.backgroundPosition = "center";
-		  spotlight.classList.remove("zoom-effect");
-        }
-
-        // force reflow to restart animation
-        void spotlight.offsetWidth;
-
-        // apply zoom + fade in
-        spotlight.classList.add("zoom-effect");
-        spotlight.style.opacity = "1";
-
-        index = (index + 1) % backdrops.length;
-      }, 800);
+      index = (index + 1) % images.length;
     }
 
-    // first load
-    changeBackdrop();
-
-    setInterval(changeBackdrop, 4000);
+    changeImage();
+    setInterval(changeImage, 4000);
 
   } catch (err) {
-    console.error("Backdrop error:", err);
+    console.error("Spotlight error:", err);
   }
 })();
 </script>
+
 
 
 
@@ -253,9 +245,9 @@ document.addEventListener('click', (event) => {
     </script>
 	
   <!-- SEO Meta Tags -->
-  <title>Cinexa - Stream Movies, TV Shows, Animes & Dramas Online</title>
-  <meta name="description" content="Cinexa - Stream Movies, TV Shows, Animes, and Dramas online" />
-  <meta name="keywords" content="Cinexa, Stream movies, TV shows online, anime , drama series, OTT platform" />
+  <title>Cinexa - Explore Movies, TV Shows, Animes & Dramas Online</title>
+  <meta name="description" content="Cinexa - Explore Movies, TV Shows, Animes, and Dramas online" />
+  <meta name="keywords" content="Cinexa, Explore movies, TV shows online, anime , drama series, OTT platform" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cinexa.icu/" />
 
@@ -272,7 +264,7 @@ document.addEventListener('click', (event) => {
   <!-- Open Graph Tags (for Facebook, WhatsApp, etc.) -->
   <meta property="og:title" content="Cinexa - Explore Movies, TV Shows, Animes & Dramas Online" />
   <meta property="og:image" content="/icons/watchout-favicon.png" />
-  <meta property="og:description" content="Stream your favorite movies, TV shows, anime, and dramas without signups on Cinexa" />
+  <meta property="og:description" content="Explore your favorite movies, TV shows, anime, and dramas without signups on cinexa" />
   
   <meta property="og:url" content="https://cinexa.icu/" />
   <meta property="og:type" content="website" />
@@ -280,10 +272,10 @@ document.addEventListener('click', (event) => {
 
   <!-- Twitter Card Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Cinexa, Stream movies, TV shows online, anime , drama series, OTT platform" />
-  <meta name="twitter:description" content="Stream your favorite movies, TV shows, anime, and dramas without signups on Cinexa" />
+  <meta name="twitter:title" content="Cinexa, Explore movies, TV shows online, anime , drama series, OTT platform" />
+  <meta name="twitter:description" content="Explore your favorite movies, TV shows, anime, and dramas without signups on WatchOut." />
   <meta name="twitter:image" content="/icons/watchout-favicon.png" />
-  <meta name="twitter:site" content="@cinexa_icu" />
+  <meta name="twitter:site" content="@cinexa_in" />
 
   <!-- Language -->
   <meta http-equiv="Content-Language" content="en" />
@@ -2049,12 +2041,7 @@ h4{font-size:21px;line-height:26px}
 <body>
 	<div class="profile-screen-wrapper" style="background-color: rgb(20, 20, 20);z-index:9999;position:fixed;width:100vw;height:100vh;">
 	<div class="profile-spotlight" style="animation: fade-in 500ms ease 200ms 1 forwards;">
-	<img class="profile-spotlight-backdrop" src="https://image.tmdb.org/t/p/w1280/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg" style="
-    width: 100%;
-    height: 80vh;
-    object-fit: cover;
-    aspect-ratio: 16/9;
-    ">
+	
 	</div>	
   <div class="profile-screen">
 	<div class="curved-bg"></div>
@@ -2127,7 +2114,15 @@ h4{font-size:21px;line-height:26px}
     display: flex;
     align-items: flex-start;
 "><img id="header-logo-img" src="/icons/header-logo.png" style="height: 30px;margin-right: 5px;">
-</a>
+<div class="default-ltr-iqcdef-cache-1s4rtl7" bis_skin_checked="1" style="
+    align-items: flex-start;
+    display: flex;
+">
+                  <svg viewBox="0 0 78 28" fill="none" class="default-ltr-iqcdef-cache-1i7rpcz" width="40px"><g opacity="0.9">
+                    <rect x="0.866667" y="0.866667" width="76.2667" height="26.2667" rx="6.06667" fill="black" fill-opacity="0.5" stroke="url(#paint0_linear_2842_85169)" stroke-width="1.73333"></rect>
+                    <path d="M11.697 18.6001V10.2481H17.001C18.081 10.2481 18.905 10.4361 19.473 10.8121C20.049 11.1881 20.337 11.7241 20.337 12.4201C20.337 12.8761 20.209 13.2561 19.953 13.5601C19.705 13.8561 19.337 14.0801 18.849 14.2321C19.489 14.3921 19.961 14.6521 20.265 15.0121C20.577 15.3721 20.733 15.8041 20.733 16.3081C20.733 17.0281 20.437 17.5921 19.845 18.0001C19.253 18.4001 18.445 18.6001 17.421 18.6001H11.697ZM14.205 16.7281H17.157C17.509 16.7281 17.765 16.6641 17.925 16.5361C18.093 16.4081 18.177 16.2241 18.177 15.9841C18.177 15.7361 18.093 15.5521 17.925 15.4321C17.765 15.3121 17.509 15.2521 17.157 15.2521H14.205V16.7281ZM14.205 13.4041H16.797C17.149 13.4041 17.401 13.3561 17.553 13.2601C17.705 13.1641 17.781 13.0001 17.781 12.7681C17.781 12.5361 17.705 12.3721 17.553 12.2761C17.401 12.1721 17.149 12.1201 16.797 12.1201H14.205V13.4041ZM27.1727 18.6001V10.2481H35.3087V12.2521H29.7647V13.3921H35.1047V15.4081H29.7647V16.5961H35.3807V18.6001H27.1727ZM47.5469 18.6001H44.9069V12.2761H41.4989V10.2481H50.9669V12.2761H47.5469V18.6001ZM59.6055 17.2081L58.9575 18.6001H56.3775L60.5295 10.2481H63.2415L67.4055 18.6001H64.6215L63.9735 17.2081H59.6055ZM61.7895 12.5521L60.5175 15.2521H63.0495L61.7895 12.5521Z" fill="url(#paint1_linear_2842_85169)"></path></g><defs><linearGradient id="paint0_linear_2842_85169" x1="67" y1="-14.3999" x2="0.0000074376" y2="43.6001" gradientUnits="userSpaceOnUse"><stop stop-color="#CC1D1D"></stop><stop offset="1" stop-color="#7F15A5"></stop></linearGradient><linearGradient id="paint1_linear_2842_85169" x1="39.0332" y1="7.6001" x2="39.0332" y2="19.6001" gradientUnits="userSpaceOnUse"><stop stop-color="white"></stop><stop offset="1" stop-color="#E6E6E6"></stop></linearGradient></defs>
+                  </svg>
+                </div></a>
                 <span class="header-title" id="header-title"></span> <!-- Changed to empty text content -->
                 <nav id="header-nav-links" class="header-nav-links">
                     <a  class="header-nav-link" onclick="renderHomeSections()">Home</a>
@@ -3351,6 +3346,7 @@ padding: 10px;
 <script>
 const imgBase = 'https://image.tmdb.org/t/p/w300';
 const workerUrl = 'https://search-proxy.bingeoutofficial.workers.dev'; // No trailing slash
+const M3U_URL = 'https://iptv-org.github.io/iptv/languages/hin.m3u';
 
 const toggleBtn = document.getElementById('tmdb-toggle-btn');
 const cancelBtn = document.getElementById('tmdb-cancel-btn');
@@ -3359,66 +3355,88 @@ const searchInput = document.getElementById('tmdb-search');
 const resultsBox = document.getElementById('mobile-results-container');
 const clearBtn = document.getElementById('search-clear');
 
-// New elements for desktop layout
 const homeSection = document.getElementById('home-section');
 const searchSection = document.getElementById('search-section');
 
+// --- NEW: Live TV Data Storage ---
+let liveChannelsCache = [];
+
+// Initialize Live TV Data
+async function initLiveChannels() {
+    try {
+        const res = await fetch(M3U_URL);
+        const text = await res.text();
+        liveChannelsCache = parseM3U(text);
+        console.log("Live Channels Loaded:", liveChannelsCache.length);
+    } catch (err) {
+        console.error("Live Channels load failed:", err);
+    }
+}
+initLiveChannels();
+
+function parseM3U(data) {
+    const lines = data.split('\n');
+    const result = [];
+    let current = null;
+    lines.forEach(line => {
+        if (line.startsWith('#EXTINF:')) {
+           const name = line.split(',').pop().trim();
+           const logo = line.match(/tvg-logo="([^"]+)"/)?.[1] || '';
+            const group = line.match(/group-title="([^"]+)"/)?.[1] || 'Live TV';
+            const tvgId = line.match(/tvg-id="([^"]+)"/)?.[1] || '';
+
+            current = {
+                name,
+                logo,
+                group,
+                tvgId,          // ✅ STORE tvg-id
+                media_type: 'live'
+            };
+        }
+ 
+		else if (line.startsWith('http')) {
+            if (current) {
+                current.url = line.trim();
+                result.push(current);
+                current = null;
+            }
+        }
+    });
+    return result;
+}
+
 // Function to check if device is mobile
 function isMobile() {
-    return window.innerWidth <= 768; // Adjust breakpoint as needed
+    return window.innerWidth <= 1000;
 }
 
 // Function to normalize strings for exact match comparison
 function normalizeForMatch(str) {
     return str
         .toLowerCase()
-        .replace(/[-\s]+/g, '') // Remove spaces and hyphens
-        .replace(/[^a-z0-9]/g, ''); // Remove punctuation
+        .replace(/[-\s]+/g, '')
+        .replace(/[^a-z0-9]/g, '');
 }
 
-// Function to fetch TMDB results for multiple pages
 async function fetchTMDBResults(searchTerm) {
     if (!searchTerm) return [];
-
-    // Extract year if present at the end of the query
     const yearMatch = searchTerm.match(/\s(\d{4})$/);
     let queryWithoutYear = searchTerm;
-    
     if (yearMatch) {
         queryWithoutYear = searchTerm.substring(0, searchTerm.length - yearMatch[0].length).trim();
     }
 
-    // Fetch results for pages 1, 2, and 3
     const pages = [1, 2];
     const results = [];
     
     for (const page of pages) {
-        // Construct URL for the proxy with page parameter
         const multiEndpoint = `${workerUrl}/search/multi?query=${encodeURIComponent(queryWithoutYear)}&language=en-US&page=${page}`;
-        
         try {
-            console.log(`Fetching page ${page} from:`, multiEndpoint);
             const res = await fetch(multiEndpoint);
-            
-            // Log response details
-            console.log(`Page ${page} Response Status:`, res.status, res.statusText);
-            console.log(`Page ${page} Response Headers:`, [...res.headers.entries()]);
-
-            if (!res.ok) {
-                const errorText = await res.text();
-                console.error(`Page ${page} Fetch Error Response:`, errorText);
-                continue; // Skip to next page on error
-            }
-
+            if (!res.ok) continue;
             const data = await res.json();
-            console.log(`Page ${page} Response Data:`, data);
+            if (!data.results) continue;
 
-            if (!data.results) {
-                console.warn(`Page ${page} No results in response:`, data);
-                continue;
-            }
-
-            // Add results from this page
             const pageResults = data.results
                 .filter(item => item.media_type === 'movie' || item.media_type === 'tv')
                 .map(item => ({ ...item, media_type: item.media_type }));
@@ -3426,20 +3444,18 @@ async function fetchTMDBResults(searchTerm) {
             results.push(...pageResults);
         } catch (err) {
             console.error(`Page ${page} TMDB search error:`, err.message);
-            continue; // Skip to next page on error
+            continue;
         }
     }
 
-    // Remove duplicates by ID (just in case)
     const uniqueResults = Array.from(
         new Map(results.map(item => [item.id, item])).values()
     );
 
-    // Sort by popularity to match TMDb's default behavior
     return uniqueResults.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 }
 
-// Function to display results for mobile (dropdown style)
+// --- UPDATED: Display Mobile with Live TV support ---
 function displayMobileResults(results, searchTerm) {
 	const resultsBox = document.getElementById('mobile-results-container');
     resultsBox.innerHTML = '';
@@ -3451,13 +3467,10 @@ function displayMobileResults(results, searchTerm) {
     }
 
     const processedResults = processAndSortResults(results, searchTerm);
-
-    // Limit to 20 results for mobile
-    const limitedResults = processedResults.slice(0, 20);
+    const limitedResults = processedResults.slice(0, 30); // Increased limit for mixed results
 
     limitedResults.forEach(item => {
         const title = item.title || item.name || 'Untitled';
-        const id = item.id;
         const type = item.media_type;
         let releaseYear = '';
 
@@ -3469,23 +3482,39 @@ function displayMobileResults(results, searchTerm) {
 
         const div = document.createElement('div');
         div.className = 'tmdb-result';
+        
+        // Dynamic poster logic for Live TV
+        const posterSrc = type === 'live' 
+            ? (item.logo || 'https://via.placeholder.com/45x68?text=LIVE')
+            : (item.poster_path ? imgBase + item.poster_path : 'https://via.placeholder.com/45x68?text=No+Image');
+
         div.innerHTML = `
-            <img src="${item.poster_path ? imgBase + item.poster_path : 'https://via.placeholder.com/45x68?text=No+Image'}" alt="${title}" loading="lazy">
+            <img src="${posterSrc}" alt="${title}" loading="lazy" style="${type === 'live' ? 'object-fit: contain; padding: 4px;' : ''}">
             <div class="tmdb-result-info">
-                <span class="tmdb-result-title">${title}</span>
+                <span class="tmdb-result-title">${title} ${type === 'live' ? '<span style="color:#ef4444; font-size:10px; margin-left:5px;">● LIVE</span>' : ''}</span>
                 <div class="tmdb-result-meta">
                     ${releaseYear ? `<span class="tmdb-result-year">${releaseYear}</span>` : ''}
-                    <span class="tmdb-result-type">${type === 'movie' ? 'Movie' : 'TV'}</span>
+                    <span class="tmdb-result-type">${type === 'live' ? 'Channel' : (type === 'movie' ? 'Movie' : 'TV')}</span>
                 </div>
             </div>
         `;
+
         div.onclick = () => {
-            if (typeof openModal === 'function') {
-                openModal(id, type);
+            if (type === 'live') {
+                // Change this to your preferred way to play streams
+                if (typeof openModal === 'function') {
+                    openModal(item.tvgId, 'channel');
+                } else {
+                    console.log("Playing stream:", item.url);
+                    window.open(item.url, '_blank'); 
+                }
             } else {
-                alert('openModal function not defined!');
+                if (typeof openModal === 'function') {
+                    openModal(item.id, type);
+                } else {
+                    alert('openModal function not defined!');
+                }
             }
-            //searchPage.classList.remove('is-visible');
             resultsBox.classList.remove('visible');
             searchInput.value = '';
             clearBtn.style.display = 'none';
@@ -3496,28 +3525,22 @@ function displayMobileResults(results, searchTerm) {
     resultsBox.classList.add('visible');
 }
 
-// Function to display results for desktop (grid style in search section)
+// --- UPDATED: Display Desktop with Live TV support ---
 function displayDesktopResults(results, searchTerm) {
     if (!searchSection) {
-        console.warn('search-section not found, falling back to mobile display');
         displayMobileResults(results, searchTerm);
         return;
     }
 
-    // Show search section and hide home section
     if (homeSection) homeSection.style.display = 'none';
     searchSection.style.display = 'block';
     window.scrollTo(0, 0);
     
-    // Update URL without page reload (only if not already on search page)
     if (window.history && window.history.pushState && window.location.pathname !== '/search') {
         window.history.pushState({page: 'search', query: searchTerm}, 'Search Results', '/search');
     }
 
-    // Clear all existing content in search section
     searchSection.innerHTML = '';
-
-    // Create results container
     const resultsContainer = document.createElement('div');
     resultsContainer.className = 'search-results-container';
 
@@ -3530,36 +3553,36 @@ function displayDesktopResults(results, searchTerm) {
         return;
     }
 
-    // Create grid
     const resultsGrid = document.createElement('div');
     resultsGrid.className = 'search-results-grid';
-
     const processedResults = processAndSortResults(results, searchTerm);
 
     processedResults.forEach(item => {
         const title = item.title || item.name || 'Untitled';
-        const id = item.id;
         const type = item.media_type;
-        let releaseYear = '';
-
-        if (type === 'movie' && item.release_date) {
-            releaseYear = new Date(item.release_date).getFullYear();
-        } else if (type === 'tv' && item.first_air_date) {
-            releaseYear = new Date(item.first_air_date).getFullYear();
-        }
 
         const itemDiv = document.createElement('div');
         itemDiv.className = 'search-result-item';
+        
+        const posterSrc = type === 'live' 
+            ? (item.logo || 'https://via.placeholder.com/200x300?text=LIVE')
+            : (item.poster_path ? imgBase + item.poster_path : 'https://via.placeholder.com/200x300?text=No+Image');
+
         itemDiv.innerHTML = `
-            <div class="result-poster">
-                <img src="${item.poster_path ? imgBase + item.poster_path : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${title}" loading="lazy">
+            <div class="result-poster" style="position:relative;">
+                <img src="${posterSrc}" alt="${title}" loading="lazy" style="${type === 'live' ? 'object-fit: contain; background: #000; padding: 10px;' : ''}">
+                ${type === 'live' ? '<div style="position:absolute; bottom:10px; left:10px; background:red; color:white; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">LIVE CHANNEL</div>' : ''}
             </div>
         `;
         
         itemDiv.onclick = () => {
-                openModal(id, type);
+            if (type === 'live') {
+                if (typeof openModal === 'function') openModal(item.tvgId, 'channel');
+                else window.open(item.url, '_blank');
+            } else {
+                openModal(item.id, type);
+            }
         };
-
         resultsGrid.appendChild(itemDiv);
     });
 
@@ -3609,29 +3632,23 @@ function processAndSortResults(results, searchTerm) {
     return processedResults;
 }
 
-// Main display function that decides which layout to use
 function displayResults(results, searchTerm) {
-    if (isMobile()) {
+    if (window.innerWidth <= 1000) {
         displayMobileResults(results, searchTerm);
     } else {
         displayDesktopResults(results, searchTerm);
     }
 }
 
-// Function to go back to home (desktop)
 function goBackToHome() {
     if (!isMobile()) {
         if (searchSection) searchSection.style.display = 'none';
         if (homeSection) homeSection.style.display = 'block';
-        
-        
+    } else {
+        history.back();
     }
-  else {
-    history.back();
-  }
 }
 
-// Helper function to sort results by title match and then popularity
 function sortByTitleMatch(results, normalizedQueryTitle) {
     const exactMatches = [];
     const partialMatches = [];
@@ -3657,7 +3674,6 @@ function sortByTitleMatch(results, normalizedQueryTitle) {
     return [...exactMatches, ...partialMatches, ...otherMatches];
 }
 
-// Debounce function to limit API calls
 function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -3666,7 +3682,7 @@ function debounce(func, wait) {
     };
 }
 
-// Fetch TMDB results with debounce
+// --- UPDATED: Search logic now includes Live Channel filtering ---
 const debouncedSearch = debounce(async (query) => {
     if (!query) {
         if (isMobile()) {
@@ -3682,113 +3698,103 @@ const debouncedSearch = debounce(async (query) => {
     clearBtn.style.display = 'flex';
 
     try {
-        const results = await fetchTMDBResults(query);
-        displayResults(results, query);
+        // 1. Fetch TMDB results
+        const tmdbResults = await fetchTMDBResults(query);
+        
+        // 2. Filter Live Channels from Cache
+        const normalizedQuery = query.toLowerCase();
+        const filteredLive = liveChannelsCache.filter(c => 
+            c.name.toLowerCase().includes(normalizedQuery)
+        );
 
-        // Only do fallback search if we got very few results and haven't already done it
-        if (results.length < 6 && query.toLowerCase().includes(' and ') && !query.includes(' & ')) {
+        // 3. Combine results (Live Channels first for higher visibility)
+        const combinedResults = [...filteredLive, ...tmdbResults];
+        
+        displayResults(combinedResults, query);
+
+        if (tmdbResults.length < 6 && query.toLowerCase().includes(' and ') && !query.includes(' & ')) {
             const modifiedQuery = query.replace(/ and /gi, ' & ');
             const modifiedResults = await fetchTMDBResults(modifiedQuery);
-            displayResults(modifiedResults, modifiedQuery);
+            displayResults([...filteredLive, ...modifiedResults], modifiedQuery);
         }
     } catch (err) {
-        console.error('TMDB search error:', err);
+        console.error('Unified search error:', err);
         if (isMobile()) {
             resultsBox.innerHTML = `<div class="tmdb-no-results">Error fetching results</div>`;
             resultsBox.classList.add('visible');
         } else {
-            // Handle desktop error display
             displayDesktopResults([], query);
         }
     }
 }, 300);
 
-// Search input event listener
 searchInput.addEventListener('input', function () {
     const query = this.value.trim();
     debouncedSearch(query);
 });
 
-// Expand search bar
 toggleBtn.addEventListener('click', () => {
-    
-    if (isMobile()) {
+    if (window.innerWidth <= 1000) {
+        // Mobile / tablet
         searchPage.classList.add('is-visible');
         searchInputBar.focus();
+
         if (window.location.pathname !== '/search') {
             history.pushState({}, '', '/search');
         }
-
     } else {
+        // Desktop
         toggleBtn.style.display = 'none';
         searchContainer.classList.add('expanded');
+
         setTimeout(() => searchInput.focus(), 300);
     }
 });
 
-// Clear search input
+
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
-    
     if (isMobile()) {
         resultsBox.innerHTML = '';
         resultsBox.classList.remove('visible');
     } else {
         goBackToHome();
     }
-    
     clearBtn.style.display = 'none';
     searchInput.focus();
 });
 
-// Collapse search bar
 cancelBtn.addEventListener('click', () => {
     searchContainer.classList.remove('expanded');
     toggleBtn.style.display = 'inline-block';
     searchInput.value = '';
-    
     if (isMobile()) {
         resultsBox.innerHTML = '';
         resultsBox.classList.remove('visible');
-    } else {
-        //goBackToHome();
     }
-    
     clearBtn.style.display = 'none';
 });
 
-// Collapse search bar and hide results when clicking outside
 document.addEventListener('click', (e) => {
     const searchWrapper = document.getElementById('tmdb-search-wrapper');
     if (!searchWrapper.contains(e.target)) {
         if (searchContainer.classList.contains('expanded')) {
-            searchContainer.classList.remove('expanded'); // Fixed typo
+            searchContainer.classList.remove('expanded');
             toggleBtn.style.display = 'inline-block';
             searchInput.value = '';
-            
-            if (isMobile()) {
-                
-                resultsBox.classList.remove('visible');
-            } else {
-                goBackToHome();
-            }
-            
+            if (isMobile()) resultsBox.classList.remove('visible');
+            else goBackToHome();
             clearBtn.style.display = 'none';
         }
     }
 });
 
-// Handle browser back/forward buttons
 window.addEventListener('popstate', (e) => {
     if (!isMobile()) {
         if (e.state && e.state.page === 'search') {
-            // User navigated back to search results
             if (searchSection) searchSection.style.display = 'block';
             if (homeSection) homeSection.style.display = 'none';
         } else {
-            // User navigated back to home
-            //goBackToHome();
-            // Clear search if going back to home
             searchInput.value = '';
             clearBtn.style.display = 'none';
             if (searchContainer.classList.contains('expanded')) {
@@ -3799,30 +3805,23 @@ window.addEventListener('popstate', (e) => {
     }
 });
 
-// Handle window resize
 window.addEventListener('resize', () => {
-    // If switching from mobile to desktop or vice versa, 
-    // you might want to adjust the layout
     const currentQuery = searchInput.value.trim();
     if (currentQuery) {
-        // Re-trigger search to adjust layout for new screen size
         setTimeout(() => debouncedSearch(currentQuery), 100);
     }
 });
 
-// Keyboard navigation for search results
 searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         if (searchInput.value.trim() !== '') {
             searchInput.value = '';
-            
             if (isMobile()) {
                 resultsBox.innerHTML = '';
                 resultsBox.classList.remove('visible');
             } else {
                 goBackToHome();
             }
-            
             clearBtn.style.display = 'none';
         } else {
             cancelBtn.click();
@@ -3831,7 +3830,6 @@ searchInput.addEventListener('keydown', (e) => {
     }
 });
 
-// Export functions for external use
 window.tmdbSearch = {
     goBackToHome,
     displayResults,
@@ -4973,7 +4971,7 @@ border-radius: 5px;
 }
 
 /* Mobile Styles (adjusting play button margin for smaller screens) */
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 1000px) {
   .result-poster {
   border-radius: 4px;
   width: 70px;
@@ -5024,7 +5022,7 @@ border-radius: 0 !important;
 }
 
 /* Mobile: Show tabs and hide inactive sections */
-        @media (max-width: 768px) {
+        @media (max-width: 1000px) {
             .section-title {
                 display: none;
             }
@@ -5226,7 +5224,7 @@ border-bottom-right-radius: 15px;
     overflow-x: auto;
 }
 /* Desktop: Hide tabs and show all sections */
-        @media (min-width: 769px) {
+        @media (min-width: 1000px) {
             
             .nav-tabs {
                 display: none !important;
@@ -5759,6 +5757,10 @@ async function fetchTrendingResults() {
                     <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
                 </svg>
       </button>
+	    <section id="channel-content" class="channel-content" style="display:none;">
+		
+		</section>
+	  
         
       
         <div id="modal-content" class="modal-content">
@@ -6566,6 +6568,7 @@ async function getMovieStreamingAndDownloadLink(movieItem, movieReleaseYear) {
 // openModal Script
 async function openModal(id, mediaType) {
     const modal = document.getElementById('tmdb-modal');
+	const modalSection = document.getElementById('modal-content');
     const overlay = document.getElementById('overlay');
     const playerWrap = document.getElementById('playerWrap');
     const iframeContainer = document.getElementById('iframe-holder');
@@ -6587,6 +6590,7 @@ async function openModal(id, mediaType) {
     const keywordsTag = document.getElementById('keywords-tag');
     const downloadBtn = document.getElementById('modal-download');
     const episodeTab = document.getElementById('episode-tab');
+	const channelSection = document.getElementById('channel-content');
     const isDesktop = window.innerWidth >= 1024;
     const spinnerHTML = `
                     <div class="loading-spinner-container">
@@ -6703,7 +6707,7 @@ fill="currentColor"></path>
     `;
     const container = document.getElementById('modal-backdrop-container');
     // Delete play-button if on desktop
-    if (window.innerWidth > 750) {
+    if (window.innerWidth > 1000) {
     // Desktop
     document.querySelectorAll('.play-button').forEach(btn => btn.remove());
     downloadBtn.style.display = 'none';
@@ -6737,7 +6741,44 @@ fill="currentColor"></path>
     document.querySelectorAll('.content-progress-bar').forEach(bar => bar.remove());
 
     let apiUrl = '';
+
+	if (mediaType === 'channel') {
+        channelSection.style.display = 'block';
+        modalSection.style.display = 'none';
+        console.log("live channel tvg-id:", id);
+        // 🔍 Find channel by tvg-id
+        const channel = liveChannelsCache.find(
+            c => c.tvgId === id
+        );
+        if (!channel || !channel.url) {
+            console.error("Channel not found for tvg-id:", id);
+            channelSection.innerHTML = `
+                <a class="modal-close" onclick="closeModal()"></a>
+                <div style="color:white; padding:20px;">Channel not available</div>
+            `;
+            return;
+        }
+        const streamUrl = channel.url;
+        // Clear old iframe
+        channelSection.innerHTML = '';
+        channelSection.innerHTML = `
+            <a class="modal-close" onclick="closeModal()"></a>
+            <iframe 
+                src="https://watchout-player.netlify.app/?url=${encodeURIComponent(streamUrl)}"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                style="width:100%; aspect-ratio:16/9; border:0;">
+            </iframe>
+        `;
+    } 
+    else {
+        modalSection.style.display = 'block';
+        channelSection.style.display = 'none';
+    }
+	
     if (mediaType === 'movie') {
+		
+		channelSection.style.display = 'none';
     apiUrl = `${MAIN_WORKER_BASE_URL}?url=${encodeURIComponent(`movie/${id}?append_to_response=credits,images,recommendations,runtime,keywords,videos,release_dates,collection,watch/providers`)}`;
 } else if (mediaType === 'tv') {
     apiUrl = `${MAIN_WORKER_BASE_URL}?url=${encodeURIComponent(`tv/${id}?append_to_response=credits,images,recommendations,seasons,first_air_date,keywords,videos,content_ratings,collection,watch/providers`)}`;
@@ -7018,7 +7059,7 @@ if (item.belongs_to_collection && item.belongs_to_collection.id) {
                 collectiondiv.innerHTML = '';
                 
                 collectionData.parts.slice(0, 9).forEach(part => {
-                    const isDesktop = window.innerWidth >= 768;
+                    const isDesktop = window.innerWidth >= 1000;
                     const imgPath = isDesktop ? part.backdrop_path : part.poster_path;
                     const imgSize = isDesktop ? 'w780' : POSTER_SIZE;
 
@@ -7130,7 +7171,7 @@ if (item.belongs_to_collection && item.belongs_to_collection.id) {
 if (item.recommendations && item.recommendations.results && item.recommendations.results.length > 0) {
     moreLikeThis.innerHTML = '';
     item.recommendations.results.slice(0, 9).forEach(recommendation => {
-        const isDesktop = window.innerWidth >= 768;
+        const isDesktop = window.innerWidth >= 1000;
         const imgPath = isDesktop ? recommendation.backdrop_path : recommendation.poster_path;
         const imgSize = isDesktop ? 'w780' : POSTER_SIZE;
 
@@ -7369,7 +7410,10 @@ if (item.recommendations && item.recommendations.results && item.recommendations
                 }
             };
 
-        } else if (mediaType === 'tv') {
+        } 
+
+		else if (mediaType === 'tv') {
+			channelSection.style.display = 'none';	
             const validSeasons = item.seasons ? item.seasons.filter(s => s.season_number >= 1) : [];
 
             if (validSeasons.length > 0) {
@@ -7456,10 +7500,16 @@ if (item.recommendations && item.recommendations.results && item.recommendations
         episodesContainer.style.display = 'none';
 
         const backdropImage = document.getElementById('modal-backdrop');
-        if (modal.dataset.currentBackdrop) {
-            backdropImage.src = modal.dataset.currentBackdrop;
+        // Add a check to ensure backdropImage is not null before trying to set its properties
+        if (backdropImage) {
+            if (modal.dataset.currentBackdrop) {
+                backdropImage.src = modal.dataset.currentBackdrop;
+            } else {
+                backdropImage.src = '';
+            }
         } else {
-            backdropImage.src = '';
+            console.warn("Element with ID 'modal-backdrop' not found.");
+            // Handle the case where the element is missing, e.g., log a warning or use a default
         }
         container.innerHTML += `<a class="modal-close" onclick="closeModal()"></a>`;
     }
@@ -7806,6 +7856,7 @@ function closeModal() {
   
     const modal = document.getElementById('tmdb-modal');
     const playerWrap = document.getElementById('playerWrap');
+	const channelSection = document.getElementById('channel-content');
     const backdropContainer = document.getElementById('modal-backdrop-container');
     const iframeHolder = document.getElementById('iframe-holder');
     displayContinueWatching();
@@ -7824,6 +7875,7 @@ function closeModal() {
     }
   
     playerWrap.innerHTML = ``;
+	channelSection.innerHTML = ``;
     if (modal.style.transform !== 'translateY(100%)') {
        modal.style.transform = 'translateY(100%)';
     }
@@ -8057,8 +8109,8 @@ function injectJSONLD(data, type = 'movie') {
     display: none; /* Chrome, Safari */
   }
   .kd-card ,.cd-card ,.ja-card{
-    width: 115px;
-    aspect-ratio: 2/3;
+    width: 29.22%;
+    aspect-ratio: 2/2.8;
     flex: 0 0 auto;
     background: #111;
     border-radius: 6px;
@@ -8069,7 +8121,8 @@ function injectJSONLD(data, type = 'movie') {
   .kd-card img,.cd-card img ,.ja-card img{
     width: 100%;
     height: auto;
-    object-fit: cover;
+	aspect-ratio:inherit;
+    object-fit: unset;
   }
   .kd-scroll-btn {
     display: none; /* Hidden by default */
@@ -8322,12 +8375,6 @@ function injectJSONLD(data, type = 'movie') {
     cursor: pointer; /* Indicate clickable */
   }
  
-  .ja-card img {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
   .ja-scroll-btn {
     display: none; /* Hidden by default */
     position: absolute;
@@ -8492,11 +8539,10 @@ function injectJSONLD(data, type = 'movie') {
         alt="Indra Group logo"
         class="h-4 w-auto"
       />
-      <span class="text-[#6b7a8a] text-xs">© Cinexa, ICU</span>
+      <span class="text-[#6b7a8a] text-xs">© Watch Out, LLC</span>
     </div>
 	<a href="https://watchout.fun/download" target="_blank">
-       <img src="https://s6.imgcdn.dev/YTjO1d.jpg" 
-       alt="YTjO1d.jpg" 
+       <img src="/icons/downloadapk.png" 
        style="height: 30px; border-radius: 4px; border: white 1px solid;">
     </a>
 
@@ -8527,7 +8573,7 @@ function injectJSONLD(data, type = 'movie') {
         z-index: 1000;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
-@media (min-width: 700px) {
+@media (min-width: 1000px) {
   .netflix-nav {
     display: none;
   }
@@ -9259,6 +9305,105 @@ function navigateTo(path) {
 
 document.addEventListener("DOMContentLoaded", handleRoute);
 window.addEventListener("popstate", handleRoute);
+
+function playLiveStream(url, name) {
+    // 1. Safety: Remove any existing player overlay before creating a new one
+    const existingOverlay = document.getElementById('external-player-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+
+    // 2. Create the main Full-Screen Overlay container
+    const overlay = document.createElement('div');
+    overlay.id = 'external-player-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000000;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    `;
+
+    // 3. Create the Header Bar (Channel Name + Close Button)
+    const header = document.createElement('div');
+    header.style.cssText = `
+        height: 60px;
+        background-color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        border-bottom: 1px solid #333;
+        box-sizing: border-box;
+    `;
+    
+    // Channel Title
+    const title = document.createElement('div');
+    title.style.cssText = `
+        font-size: 18px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60%;
+    `;
+    title.textContent = `Streaming: ${name}`;
+    
+    // Close Button
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&#10005; Close Player';
+    closeBtn.style.cssText = `
+        background-color: #e11d48;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.2s;
+    `;
+    closeBtn.onmouseover = () => closeBtn.style.backgroundColor = '#be123c';
+    closeBtn.onmouseout = () => closeBtn.style.backgroundColor = '#e11d48';
+    
+    // Function to close the player and stop the stream
+    closeBtn.onclick = () => {
+        overlay.remove();
+    };
+
+    // 4. Create the Iframe
+    const iframe = document.createElement('iframe');
+    const encodedStreamUrl = encodeURIComponent(url);
+    iframe.src = `https://watchout-player.netlify.app/?url=${encodedStreamUrl}`;
+    
+    iframe.style.cssText = `
+        flex: 1;
+        width: 100%;
+        border: none;
+        background-color: #000;
+    `;
+    
+    // Essential iframe permissions for video playback
+    iframe.allow = "autoplay; encrypted-media; fullscreen; picture-in-picture";
+    iframe.setAttribute('allowfullscreen', 'true');
+
+    // 5. Assemble and inject into the DOM
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+    overlay.appendChild(header);
+    overlay.appendChild(iframe);
+    
+    document.body.appendChild(overlay);
+}
 
 </script>
 </body>
