@@ -17,6 +17,35 @@
   <meta name="monetag" content="22f96c99a1ef9c7f13c4c8467014d6d1">
   <script>(function(s){s.dataset.zone='10557224',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
   <!-- Google tag (gtag.js) -->
+  <script>
+    const reportModal = document.getElementById("reportModal");
+    const issueType = document.getElementById("issueType");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function openReportModal() {
+      reportModal.classList.add("active");
+    }
+
+    function closeReportModal() {
+      reportModal.classList.remove("active");
+    }
+
+    issueType.addEventListener("change", () => {
+      submitBtn.disabled = issueType.value === "";
+    });
+
+    function submitIssue() {
+      const type = issueType.value;
+      const desc = document.getElementById("issueDesc").value;
+
+      alert(`Issue reported:\nType: ${type}\nDescription: ${desc || "N/A"}`);
+
+      closeReportModal();
+      issueType.value = "";
+      document.getElementById("issueDesc").value = "";
+      submitBtn.disabled = true;
+    }
+  </script>
 <script>
 (async () => {
   const API_URL = "https://workers-playground-autumn-mouse-86e7.watchoutofficial2006.workers.dev/?url=trending/all/week";
@@ -6004,7 +6033,7 @@ style="fill:#FFFFFF;">
 </ion-col>
 <ion-col style="flex: 0 0 calc(calc(3 / var(--ion-grid-columns, 12)) * 100%); max-width: calc(calc(3 / var(--ion-grid-columns, 12)) * 100%); width: calc(calc(3 / var(--ion-grid-columns, 12)) * 100%);">
 <div class="btn-vertical">
-<ion-icon class="md hydrated"><img class="svg-icon" loading="lazy" src="https://net20.cc/mobile/img/report2222.svg" /></ion-icon>
+<ion-icon class="md hydrated" onclick="openReportModal()" ><img class="svg-icon" loading="lazy" src="https://net20.cc/mobile/img/report2222.svg" /></ion-icon>
 <span class="btn">Reports</span>
 </div>
 </ion-col>
