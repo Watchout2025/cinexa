@@ -5904,15 +5904,7 @@ async function fetchTrendingResults() {
         window.onload = fetchTrendingResults;
 
     </script>
-    
-<div id="overlay" onclick="closeModal()" class="modal-overlay""></div>
-    <div class="iframe-holder" id="iframe-holder">
-            <a class="player-close" onclick="closePlayer()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
-
-</svg></a>
-        </div>
-	<div class="report-modal" id="reportModal">
+ <div class="report-modal" id="reportModal">
     <div class="report-modal-box">
       <div class="report-modal-header">
         <h2 class="report-modal-title">Report an Issue</h2>
@@ -5940,7 +5932,15 @@ async function fetchTrendingResults() {
         </button>
       </div>
     </div>
-  </div>
+  </div>   
+<div id="overlay" onclick="closeModal()" class="modal-overlay""></div>
+    <div class="iframe-holder" id="iframe-holder">
+            <a class="player-close" onclick="closePlayer()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
+
+</svg></a>
+        </div>
+	
     <div id="tmdb-modal" style="visibility: hidden;" class="tmdb-modal">
       <button onclick="closeModal()" style="margin-bottom:10px" class="icon-button">
                 <!-- Back/Close Arrow SVG -->
