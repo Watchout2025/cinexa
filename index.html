@@ -9593,7 +9593,7 @@ function playLiveStream(url, name) {
   submitBtn.disabled = true;
 
   try {
-    const res = await fetch("https:report.bingeoutofficial.workers.dev", {
+    const res = await fetch("https://report.bingeoutofficial.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
