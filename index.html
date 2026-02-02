@@ -283,6 +283,147 @@ document.addEventListener('click', (event) => {
   
 <!-- Add your custom styles here -->
 <style>
+    /* Trigger button */
+    .report-issue-btn {
+      padding: 12px 20px;
+      background: var(--netflix-red);
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Overlay */
+    .report-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 16px;
+    }
+
+    .report-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Modal box */
+    .report-modal-box {
+      background: var(--bg-dark);
+      width: 100%;
+      max-width: 420px;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      transform: translateY(10px) scale(0.96);
+      transition: transform 0.2s ease;
+    }
+
+    .report-modal.active .report-modal-box {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Header */
+    .report-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .report-modal-title {
+      font-size: 18px;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .report-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .report-close-btn:hover { color: #fff; }
+
+    /* Body */
+    .report-modal-body label {
+      display: block;
+      margin: 14px 0 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .report-modal-body select,
+    .report-modal-body textarea {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      background: #000;
+      border: 1px solid var(--border-dark);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .report-modal-body select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23b3b3b3' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 12px;
+    }
+
+    .report-modal-body select:focus,
+    .report-modal-body textarea:focus {
+      border-color: var(--netflix-red);
+    }
+
+    .report-modal-body textarea {
+      resize: none;
+      min-height: 96px;
+    }
+
+    /* Footer */
+    .report-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .report-submit-btn {
+      padding: 10px 18px;
+      background: var(--netflix-red);
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .report-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 480px) {
+      .report-modal-box { padding: 16px; }
+      .report-modal-title { font-size: 16px; }
+      .report-issue-btn { width: 100%; }
+    }
 
 /* Zoom animation */
 @keyframes slowZoom {
@@ -2102,7 +2243,7 @@ h4{font-size:21px;line-height:26px}
   });
 </script>
 
-
+  
   <div class="netflix-sans-font-loaded __web-inspector-hide-shortcut__">
     <!-- Main container -->
     <div class="min-h-screen flex flex-col">
@@ -5742,6 +5883,35 @@ async function fetchTrendingResults() {
 
 </svg></a>
         </div>
+	<div class="report-modal" id="reportModal">
+    <div class="report-modal-box">
+      <div class="report-modal-header">
+        <h2 class="report-modal-title">Report an Issue</h2>
+        <button class="report-close-btn" onclick="closeReportModal()">&times;</button>
+      </div>
+
+      <div class="report-modal-body">
+        <label for="issueType">Issue Type</label>
+        <select id="issueType">
+          <option value="">Select an issue</option>
+          <option value="video">Video not playing</option>
+          <option value="audio">Audio issue</option>
+          <option value="subtitle">Subtitle issue</option>
+          <option value="buffer">Buffering or slow playback</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="issueDesc">Description (optional)</label>
+        <textarea id="issueDesc" placeholder="Describe the problem"></textarea>
+      </div>
+
+      <div class="report-modal-footer">
+        <button class="report-submit-btn" id="submitBtn" onclick="submitIssue()" disabled>
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
     <div id="tmdb-modal" style="visibility: hidden;" class="tmdb-modal">
       <button onclick="closeModal()" style="margin-bottom:10px" class="icon-button">
                 <!-- Back/Close Arrow SVG -->
