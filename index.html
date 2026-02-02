@@ -9586,17 +9586,37 @@ function playLiveStream(url, name) {
       submitBtn.disabled = issueType.value === "";
     });
 
-    function submitIssue() {
-      const type = issueType.value;
-      const desc = document.getElementById("issueDesc").value;
+    async function submitIssue() {
+  const type = issueType.value;
+  const desc = document.getElementById("issueDesc").value;
 
-      alert(`Issue reported:\nType: ${type}\nDescription: ${desc || "N/A"}`);
+  submitBtn.disabled = true;
 
-      closeReportModal();
-      issueType.value = "";
-      document.getElementById("issueDesc").value = "";
-      submitBtn.disabled = true;
-    }
+  try {
+    const res = await fetch("https:report.bingeoutofficial.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        issueType: type,
+        description: desc,
+        pageUrl: location.href
+      })
+    });
+
+    if (!res.ok) throw new Error("Failed");
+
+    alert("Issue reported successfully");
+
+    closeReportModal();
+    issueType.value = "";
+    document.getElementById("issueDesc").value = "";
+
+  } catch (e) {
+    alert("Failed to report issue. Try again.");
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
   </script>
 </body>
 
